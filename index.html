@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Campus Canteen</title>
+<style>
+:root{--navy:#14213d;--blue:#2563eb;--mint:#d9fbe8;--bg:#f4f7fb;--ink:#172033;--muted:#667085;--line:#e5eaf2;--orange:#ffb454}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;font-weight:700;background:var(--blue);color:white}button:disabled{opacity:.45;cursor:not-allowed}
+.shell{display:flex;min-height:100vh}.sidebar{width:240px;background:var(--navy);color:white;padding:26px 18px;display:flex;flex-direction:column;gap:8px}.brand{font-size:19px;font-weight:850;line-height:1.2;margin:0 8px 25px}.brand span{color:#8ce7b5}.nav{background:transparent;color:#d7dfef;text-align:left;width:100%;padding:12px;border-radius:10px}.nav.active,.nav:hover{background:#26385c;color:white}.side-note{margin-top:auto;color:#b8c5da;font-size:12px;line-height:1.5;padding:10px}
+main{flex:1;min-width:0;padding:28px clamp(16px,3vw,38px)}.top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:26px}.eyebrow{font-size:11px;letter-spacing:1.8px;color:var(--blue);font-weight:850}.top h1{font-size:clamp(24px,3vw,34px);margin:5px 0}.sub{color:var(--muted);margin:0;font-size:14px}.pill{border-radius:999px;background:#e7f9ef;color:#187448;padding:8px 12px;font-size:12px;font-weight:800;white-space:nowrap}
+.hero{background:linear-gradient(115deg,#14213d,#254e75);color:white;border-radius:22px;padding:26px;display:flex;align-items:center;justify-content:space-between;gap:18px;overflow:hidden}.hero h2{font-size:clamp(23px,3vw,34px);line-height:1.12;margin:10px 0}.hero p{color:#d5e1f1;max-width:550px;line-height:1.55}.hero .stamp{font-size:66px;filter:drop-shadow(0 10px 12px #0003)}.hero button{background:#9df0bd;color:#123326}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.stat,.panel,.food{background:white;border:1px solid var(--line);border-radius:17px;padding:18px}.stat .label{color:var(--muted);font-size:12px}.stat .num{font-size:26px;font-weight:850;margin-top:8px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:26px 0 13px}.section-head h2{margin:0;font-size:20px}.section-head p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.foods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.food-icon{height:95px;border-radius:13px;background:linear-gradient(135deg,#fff0d8,#ffe0aa);display:grid;place-items:center;font-size:48px;margin-bottom:14px}.food h3{margin:0 0 5px}.food small{color:var(--muted)}.food-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:8px}.stock{font-size:12px;color:#278153;font-weight:750}.qty{display:flex;align-items:center;gap:10px}.qty button{padding:5px 10px;background:#eef3ff;color:#2347a8;font-size:17px}.qty span{min-width:14px;text-align:center;font-weight:800}
+.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}.panel h3{margin:0 0 14px}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}tr:last-child td{border-bottom:0}.tag{font-size:11px;font-weight:800;padding:5px 8px;border-radius:999px;background:#e6f8ee;color:#167447}.tag.warn{background:#fff2dc;color:#935b0a}.wide{width:100%;margin-top:14px}.secondary{background:#eef3ff;color:#2347a8}.hidden{display:none!important}.notice{padding:13px 15px;border-radius:12px;background:#eef5ff;color:#234477;font-size:13px;line-height:1.5;margin:14px 0}.form-row{display:flex;gap:10px;flex-wrap:wrap}.form-row input,.form-row select,input{padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:white;min-width:0}.token-card{text-align:center;padding:30px}.token-number{font-size:54px;color:var(--blue);font-weight:900;letter-spacing:2px;margin:12px}.qr-placeholder{width:110px;height:110px;margin:18px auto;background:repeating-conic-gradient(#15233e 0% 25%,white 0% 50%) 50%/16px 16px;border:8px solid white;outline:1px solid var(--line)}
+footer{margin-top:28px;color:var(--muted);font-size:12px;text-align:center}.toast{position:fixed;bottom:20px;right:20px;background:#14213d;color:white;padding:14px 18px;border-radius:12px;box-shadow:0 8px 25px #0002;display:none;z-index:5}.admin-login{max-width:460px;margin:30px auto}.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.admin-form input,.admin-form select{width:100%}.admin-form .full{grid-column:1/-1}.dish-admin-row{display:grid;grid-template-columns:1.2fr .7fr .7fr .8fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.dish-admin-row:last-child{border-bottom:0}.tiny-btn{padding:7px 10px;font-size:12px}.danger{background:#fff0f0;color:#b42318}.admin-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:15px}@media(max-width:600px){.admin-form{grid-template-columns:1fr}.admin-form .full{grid-column:auto}.dish-admin-row{grid-template-columns:1fr 1fr}.dish-admin-row>*:first-child{grid-column:1/-1}}
+@media(max-width:900px){.sidebar{width:190px}.stats{grid-template-columns:repeat(2,1fr)}.foods{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
+@media(max-width:600px){.shell{display:block}.sidebar{width:100%;padding:14px;display:block}.brand{margin:0 0 12px}.navs{display:flex;gap:5px;overflow:auto}.nav{white-space:nowrap;width:auto;font-size:12px;padding:9px}.side-note{display:none}main{padding:18px 13px}.hero{padding:20px}.hero .stamp{font-size:42px}.stats{gap:9px}.stat{padding:13px}.stat .num{font-size:22px}.foods{grid-template-columns:1fr 1fr;gap:9px}.food{padding:12px}.food-icon{height:70px;font-size:36px}.food-bottom{align-items:flex-start;flex-direction:column}.top{align-items:flex-start}.pill{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand">SMART CAMPUS<br><span>CANTEEN</span></div>
+  <div class="navs">
+    <button class="nav active" data-page="student">🍽️ Student Menu</button>
+    <button class="nav" data-page="orders">🧾 My Orders</button>
+    <button class="nav" data-page="admin">🔐 Admin Login</button>
+  </div>
+  <div class="side-note">PREPARE SMARTER<br>SERVE BETTER<br>WASTE LESS<br><br>Prototype v1 · Sample data</div>
+</aside>
+<main>
+<header class="top"><div><div class="eyebrow">SMART CAMPUS CANTEEN · REVIEW 2</div><h1 id="pageTitle">Today's Menu</h1><p class="sub" id="pageSub">Pre-order lunch and collect it with your token.</p></div><div class="pill" id="deadlinePill">● Orders close at 11:00 AM</div></header>
+
+<section id="studentPage">
+  <div class="hero"><div><div class="eyebrow" style="color:#9df0bd">LESS WAITING · LESS WASTE</div><h2>Your lunch.<br>Planned smarter.</h2><p>Choose your meal before 11:00 AM. The canteen can prepare closer to confirmed demand.</p><button onclick="document.getElementById('menuSection').scrollIntoView({behavior:'smooth'})">Explore today's menu ↘</button></div><div class="stamp">🥗</div></div>
+  <div class="stats">
+    <div class="stat"><div class="label">Dishes available</div><div class="num" id="dishCount">4</div></div>
+    <div class="stat"><div class="label">Items in your cart</div><div class="num" id="cartCount">0</div></div>
+    <div class="stat"><div class="label">Your confirmed orders</div><div class="num" id="myOrderCount">0</div></div>
+    <div class="stat"><div class="label">Pre-order deadline</div><div class="num" style="font-size:22px">11:00 AM</div></div>
+  </div>
+  <div class="section-head" id="menuSection"><div><h2>Today's lunch</h2><p>Sample menu · Stock updates when you order</p></div><select id="daySelect" aria-label="Select day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option></select></div>
+  <div class="foods" id="foodList"></div>
+  <div class="panel" style="margin-top:16px"><div class="section-head" style="margin:0 0 12px"><div><h3 style="margin:0">Your pre-order</h3><p>Review quantities before confirming.</p></div><strong id="cartTotal">0 items</strong></div><div id="cartSummary" class="sub">Your cart is empty. Add a dish above.</div><div class="form-row" style="margin-top:15px"><input id="studentId" placeholder="Student ID (e.g. ECE090)" aria-label="Student ID"><input id="studentName" placeholder="Your name" aria-label="Your name"><button id="confirmBtn" onclick="confirmOrder()">Confirm pre-order</button></div><div class="notice">Demo mode: no real login, payment or live college database is connected. The deadline is simulated so you can test the flow.</div></div>
+</section>
+
+<section id="ordersPage" class="hidden">
+  <div class="panel"><div class="section-head" style="margin-top:0"><div><h2>My orders</h2><p>Your confirmed demo orders and pickup tokens.</p></div><button class="secondary" onclick="renderOrders()">Refresh</button></div><div id="ordersList"></div></div>
+</section>
+
+<section id="adminPage" class="hidden">
+  <div id="adminLoginGate" class="panel admin-login">
+    <div class="eyebrow">RESTRICTED STAFF ACCESS</div>
+    <h2 style="margin:8px 0">Admin sign in</h2>
+    <p class="sub">Only canteen staff should use this area to update the daily menu, prices and stock.</p>
+    <form id="adminLoginForm" style="margin-top:18px">
+      <label class="sub" for="adminUsername">Admin username</label>
+      <input id="adminUsername" autocomplete="username" placeholder="Enter admin username" style="width:100%;margin:6px 0 12px" required>
+      <label class="sub" for="adminPassword">Admin password</label>
+      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Enter admin password" style="width:100%;margin:6px 0 12px" required>
+      <button class="wide" type="submit">Sign in to dashboard</button>
+    </form>
+    <div class="notice">Prototype demo login: username <strong>admin</strong> · password <strong>canteen123</strong>. This is a demo gate, not secure production authentication.</div>
+  </div>
+  <div id="adminWorkspace" class="hidden">
+  <div class="admin-tools"><span class="tag">ADMIN ACCESS ACTIVE</span><button id="adminLogoutBtn" class="secondary tiny-btn">Log out</button><label for="adminDaySelect" class="sub">Edit menu for:</label><select id="adminDaySelect"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option></select></div>
+  <div class="panel" style="margin-bottom:16px">
+    <div class="section-head" style="margin-top:0"><div><h2>Daily menu manager</h2><p>Add dishes or update today's dish, rate and available portions. Students see the saved menu for the selected day.</p></div></div>
+    <form id="dishForm" class="admin-form">
+      <input id="dishId" type="hidden">
+      <input id="dishName" placeholder="Food name (e.g. Idli Sambar)" required>
+      <input id="dishPrice" type="number" min="0" step="1" placeholder="Price ₹" required>
+      <input id="dishStock" type="number" min="0" step="1" placeholder="Available portions" required>
+      <input id="dishEmoji" placeholder="Food emoji (e.g. 🍚)" maxlength="8">
+      <input id="dishDesc" class="full" placeholder="Short description (optional)">
+      <div class="full form-row"><button type="submit" id="dishSaveBtn">Add food to this day's menu</button><button type="button" id="dishCancelBtn" class="secondary hidden">Cancel edit</button></div>
+    </form>
+    <div class="notice">Tip: choose the day above first, then edit that day's menu. Changes are saved in this browser and remain after refresh.</div>
+    <div id="adminDishList"></div>
+  </div>
+  <div class="hero"><div><div class="eyebrow" style="color:#9df0bd">STAFF VIEW</div><h2>Plan preparation<br>with confirmed demand.</h2><p>Use the sample dashboard to see orders, remaining stock and a suggested cooking quantity with a 5% example buffer.</p></div><div class="stamp">👩‍🍳</div></div>
+  <div class="stats">
+    <div class="stat"><div class="label">Pre-orders today</div><div class="num" id="adminOrders">0</div></div>
+    <div class="stat"><div class="label">Emergency orders</div><div class="num">0</div></div>
+    <div class="stat"><div class="label">Dishes on menu</div><div class="num" id="adminDishes">4</div></div>
+    <div class="stat"><div class="label">Leftover entries</div><div class="num" id="leftoverCount">0</div></div>
+  </div>
+  <div class="grid2"><div class="panel"><h3>Preparation plan</h3><p class="sub" style="margin-bottom:10px">Confirmed orders + 5% sample buffer</p><div class="table-wrap"><table><thead><tr><th>Dish</th><th>Orders</th><th>Cook qty</th><th>Stock left</th></tr></thead><tbody id="prepTable"></tbody></table></div></div>
+  <div class="panel"><h3>Record leftover food</h3><p class="sub">Enter the amount remaining at the end of service.</p><form id="leftoverForm" style="margin-top:15px"><label class="sub" for="leftoverDish">Dish</label><select id="leftoverDish" style="width:100%;margin:6px 0 12px"></select><label class="sub" for="leftoverKg">Leftover (kg)</label><input id="leftoverKg" type="number" min="0" step="0.1" placeholder="e.g. 1.5" style="width:100%;margin:6px 0 12px" required><button type="submit" class="wide">Save leftover entry</button></form><div id="leftoverEntries" class="sub" style="margin-top:12px"></div></div></div>
+  <div class="panel" style="margin-top:16px"><h3>Confirmed order log</h3><div class="table-wrap"><table><thead><tr><th>Token</th><th>Student</th><th>Dish / qty</th><th>Status</th></tr></thead><tbody id="adminOrderTable"></tbody></table></div></div>
+  <div class="notice">Orders and menu are still prototype data. Menu updates persist in this browser only; a real deployment needs a database and secure server-side admin authentication.</div>
+  </div>
+</section>
+<footer>SMART CAMPUS CANTEEN · PREPARE SMARTER · SERVE BETTER · WASTE LESS</footer>
+</main></div><div class="toast" id="toast"></div>
+<script>
+const initialDishes=[
+{id:'meals',name:'Veg Meals',emoji:'🍛',price:60,stock:12,desc:'Rice, curry & sides'},
+{id:'lemon',name:'Lemon Rice',emoji:'🍋',price:35,stock:8,desc:'Fresh & tangy rice'},
+{id:'curd',name:'Curd Rice',emoji:'🥣',price:30,stock:15,desc:'Cooling curd rice'},
+{id:'chapati',name:'Chapati Kurma',emoji:'🫓',price:45,stock:10,desc:'Chapati with kurma'}
+];
+const days=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+const $=id=>document.getElementById(id);
+let menusByDay=loadMenus(), currentDay=$('daySelect').value, dishes=cloneMenu(currentDay), cart={}, orders=[], leftovers=[];
+let tokenCounter=42, adminAuthenticated=false, editingDishId='';
+function cloneMenu(day){return (menusByDay[day]||initialDishes).map(x=>({...x}));}
+function loadMenus(){
+  try { const saved=JSON.parse(localStorage.getItem('scc_menus_by_day')||'null'); if(saved&&typeof saved==='object') return saved; } catch(e){}
+  const obj={}; days.forEach(day=>obj[day]=initialDishes.map(x=>({...x}))); return obj;
+}
+function saveMenus(){localStorage.setItem('scc_menus_by_day',JSON.stringify(menusByDay));}
+function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').style.display='none',2600)}
+function loadDay(day){currentDay=day;dishes=cloneMenu(day);cart={};renderMenu();renderAdmin();$('cartSummary').textContent='Your cart is empty. Add a dish above.';}
+function renderMenu(){
+ $('foodList').innerHTML=dishes.length?dishes.map(d=>`<article class="food"><div class="food-icon">${d.emoji||'🍽️'}</div><h3>${d.name}</h3><small>${d.desc||'Freshly prepared today'}</small><div class="food-bottom"><div><strong>₹${d.price}</strong><div class="stock">${d.stock} portions left</div></div><div class="qty"><button aria-label="Remove ${d.name}" onclick="changeQty('${d.id}',-1)">−</button><span>${cart[d.id]||0}</span><button aria-label="Add ${d.name}" onclick="changeQty('${d.id}',1)" ${d.stock<=0?'disabled':''}>+</button></div></div></article>`).join(''):'<div class="notice">No food items are listed for this day yet. Please check again later.</div>';
+ const count=Object.values(cart).reduce((a,b)=>a+b,0);$('cartCount').textContent=count;$('cartTotal').textContent=count+' item'+(count===1?'':'s');
+ const chosen=dishes.filter(d=>cart[d.id]).map(d=>`${d.name} × ${cart[d.id]} — ₹${d.price*cart[d.id]}`);
+ $('cartSummary').innerHTML=chosen.length?chosen.map(x=>`<div style="padding:5px 0">${x}</div>`).join(''):'Your cart is empty. Add a dish above.';
+ $('dishCount').textContent=dishes.filter(d=>d.stock>0).length;
+}
+function changeQty(id,delta){const d=dishes.find(x=>x.id===id);if(!d)return;const next=(cart[id]||0)+delta;if(next<0)return;if(delta>0&&next>d.stock){toast('Not enough stock available.');return}if(next===0)delete cart[id];else cart[id]=next;renderMenu()}
+function confirmOrder(){
+ const id=$('studentId').value.trim(),name=$('studentName').value.trim();
+ if(!id||!name){toast('Enter your Student ID and name first.');return}
+ const selected=dishes.filter(d=>cart[d.id]);if(!selected.length){toast('Add at least one dish to your cart.');return}
+ const token='A-'+String(tokenCounter++).padStart(3,'0');
+ const items=selected.map(d=>({id:d.id,name:d.name,qty:cart[d.id],price:d.price}));
+ items.forEach(i=>{const d=dishes.find(x=>x.id===i.id);d.stock-=i.qty});
+ menusByDay[currentDay]=dishes.map(x=>({...x}));saveMenus();
+ orders.unshift({token,id,name,items,total:items.reduce((s,i)=>s+i.qty*i.price,0),status:'Confirmed',day:currentDay,time:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});
+ cart={};renderMenu();renderOrders();renderAdmin();toast('Order confirmed! Pickup token '+token);
+ $('cartSummary').innerHTML=`<div class="notice">Order confirmed! Your pickup token is <strong>${token}</strong>. Open My Orders to view it.</div>`;
+}
+function renderOrders(){
+ $('myOrderCount').textContent=orders.length;
+ $('ordersList').innerHTML=orders.length?orders.map(o=>`<div class="panel" style="margin:12px 0;background:#f9fbff"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><div class="eyebrow">PICKUP TOKEN</div><div class="token-number" style="font-size:32px;text-align:left">${o.token}</div><strong>${o.name}</strong> <span class="sub">(${o.id})</span><p class="sub">${o.day} · ${o.time}</p></div><span class="tag">${o.status}</span></div><div class="sub">${o.items.map(i=>`${i.name} × ${i.qty}`).join(' · ')}</div><strong style="display:block;margin-top:10px">Total: ₹${o.total}</strong><div class="qr-placeholder" title="Decorative sample QR pattern" aria-label="Decorative sample QR pattern"></div><small class="sub">Decorative QR placeholder — not scannable.</small></div>`).join(''):'<div class="notice">No orders yet. Place a sample order from Student Menu to see your token here.</div>';
+}
+function renderAdmin(){
+ $('adminOrders').textContent=orders.reduce((s,o)=>s+o.items.reduce((a,i)=>a+i.qty,0),0);$('adminDishes').textContent=dishes.length;$('leftoverCount').textContent=leftovers.length;
+ $('prepTable').innerHTML=dishes.map(d=>{const n=orders.filter(o=>o.day===currentDay).reduce((s,o)=>s+o.items.filter(i=>i.id===d.id).reduce((a,i)=>a+i.qty,0),0);return `<tr><td>${d.name}</td><td>${n}</td><td>${Math.ceil(n*1.05)}</td><td>${d.stock}</td></tr>`}).join('');
+ $('adminOrderTable').innerHTML=orders.length?orders.map(o=>`<tr><td><strong>${o.token}</strong></td><td>${o.name}</td><td>${o.items.map(i=>`${i.name} × ${i.qty}`).join(', ')}</td><td><span class="tag">${o.status}</span></td></tr>`).join(''):'<tr><td colspan="4">No orders yet.</td></tr>';
+ $('leftoverDish').innerHTML=dishes.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');
+ $('leftoverEntries').innerHTML=leftovers.length?leftovers.map(l=>`<div style="padding:7px 0;border-bottom:1px solid var(--line)">${l.name}: <strong>${l.kg} kg</strong> <span>· ${l.time}</span></div>`).join(''):'No leftover entries recorded yet.';
+ if($('adminWorkspace')&&!$('adminWorkspace').classList.contains('hidden')) renderAdminDishList();
+}
+function renderAdminDishList(){
+ $('adminDishList').innerHTML=dishes.length?dishes.map(d=>`<div class="dish-admin-row"><div><strong>${d.emoji||'🍽️'} ${d.name}</strong><div class="sub">${d.desc||'No description'}</div></div><div>₹${d.price}</div><div>${d.stock} portions</div><div class="sub">Menu item</div><div class="form-row"><button type="button" class="tiny-btn secondary" onclick="editDish('${d.id}')">Edit</button><button type="button" class="tiny-btn danger" onclick="deleteDish('${d.id}')">Delete</button></div></div>`).join(''):'<div class="notice">No dishes yet. Use the form above to add one.</div>';
+}
+function resetDishForm(){editingDishId='';$('dishId').value='';$('dishName').value='';$('dishPrice').value='';$('dishStock').value='';$('dishEmoji').value='🍽️';$('dishDesc').value='';$('dishSaveBtn').textContent="Add food to this day's menu";$('dishCancelBtn').classList.add('hidden');}
+function editDish(id){const d=dishes.find(x=>x.id===id);if(!d)return;editingDishId=id;$('dishId').value=id;$('dishName').value=d.name;$('dishPrice').value=d.price;$('dishStock').value=d.stock;$('dishEmoji').value=d.emoji||'🍽️';$('dishDesc').value=d.desc||'';$('dishSaveBtn').textContent='Save food changes';$('dishCancelBtn').classList.remove('hidden');$('dishName').focus();}
+function deleteDish(id){if(!adminAuthenticated)return;if(!confirm('Remove this food from '+currentDay+"'s menu?"))return;dishes=dishes.filter(d=>d.id!==id);delete cart[id];menusByDay[currentDay]=dishes.map(x=>({...x}));saveMenus();renderMenu();renderAdmin();toast('Food removed from '+currentDay+"'s menu.");}
+$('adminLoginForm').addEventListener('submit',e=>{e.preventDefault();if($('adminUsername').value.trim()==='admin'&&$('adminPassword').value==='canteen123'){adminAuthenticated=true;$('adminLoginGate').classList.add('hidden');$('adminWorkspace').classList.remove('hidden');$('adminDaySelect').value=currentDay;renderAdmin();toast('Admin sign-in successful.');}else{toast('Wrong admin username or password.');}});
+$('adminLogoutBtn').addEventListener('click',()=>{adminAuthenticated=false;$('adminWorkspace').classList.add('hidden');$('adminLoginGate').classList.remove('hidden');$('adminPassword').value='';toast('Admin logged out.');});
+$('adminDaySelect').addEventListener('change',()=>{loadDay($('adminDaySelect').value);toast('Now editing '+currentDay+"'s menu.");});
+$('dishForm').addEventListener('submit',e=>{e.preventDefault();if(!adminAuthenticated){toast('Admin sign-in required.');return;}const name=$('dishName').value.trim(),price=Number($('dishPrice').value),stock=Number($('dishStock').value),emoji=$('dishEmoji').value.trim()||'🍽️',desc=$('dishDesc').value.trim();if(!name||!Number.isFinite(price)||price<0||!Number.isInteger(stock)||stock<0){toast('Enter a food name, valid price and whole-number stock.');return;}if(editingDishId){const d=dishes.find(x=>x.id===editingDishId);if(d)Object.assign(d,{name,price,stock,emoji,desc});}else{dishes.push({id:'dish-'+Date.now(),name,price,stock,emoji,desc});}menusByDay[currentDay]=dishes.map(x=>({...x}));saveMenus();resetDishForm();renderMenu();renderAdmin();toast('Daily menu saved. Students will see these updates in this browser.');});
+$('dishCancelBtn').addEventListener('click',resetDishForm);
+document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));b.classList.add('active');['student','orders','admin'].forEach(p=>$(p+'Page').classList.toggle('hidden',p!==b.dataset.page));const titles={student:['Today’s Menu','Pre-order lunch and collect it with your token.'],orders:['My Orders','Your confirmed demo orders and pickup tokens.'],admin:['Admin Dashboard','Staff-only daily menu and canteen controls.']};$('pageTitle').textContent=titles[b.dataset.page][0];$('pageSub').textContent=titles[b.dataset.page][1];if(b.dataset.page==='admin'){if(adminAuthenticated){$('adminLoginGate').classList.add('hidden');$('adminWorkspace').classList.remove('hidden');renderAdmin();}else{$('adminLoginGate').classList.remove('hidden');$('adminWorkspace').classList.add('hidden');}}if(b.dataset.page==='orders')renderOrders()}));
+$('leftoverForm').addEventListener('submit',e=>{e.preventDefault();if(!adminAuthenticated){toast('Admin sign-in required.');return;}const d=dishes.find(x=>x.id===$('leftoverDish').value),kg=Number($('leftoverKg').value);if(!d||!Number.isFinite(kg)||kg<0)return;leftovers.unshift({name:d.name,kg,time:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});$('leftoverKg').value='';renderAdmin();toast('Leftover entry saved in this demo.')});
+$('daySelect').addEventListener('change',()=>{loadDay($('daySelect').value);toast('Showing '+$('daySelect').value+"'s menu.");});
+renderMenu();renderOrders();renderAdmin();
+</script>
+</body></html>

@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Anyone can view the menu; only the approved admin can edit it.
+    match /menus/{day} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.token.email == "REPLACE_WITH_ADMIN_EMAIL";
+    }
+
+    // Students may submit an order. Admin can read all orders and update order status.
+    // Do not store sensitive personal information in student orders.
+    match /orders/{orderId} {
+      allow create: if request.resource.data.keys().hasAll(
+          ['studentId', 'studentName', 'items', 'total', 'day', 'status']
+        )
+        && request.resource.data.studentId is string
+        && request.resource.data.studentName is string
+        && request.resource.data.items is list
+        && request.resource.data.total is number
+        && request.resource.data.day is string
+        && request.resource.data.status == 'Confirmed';
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email == "REPLACE_WITH_ADMIN_EMAIL";
+    }
+  }
+}
